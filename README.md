@@ -47,7 +47,4 @@ Status management
 
 Filtering & exporting
 
-Notifications & analytics
-=======
 
->>>>>>> 30729c03dc6c1e4966554ae65742bf08316809b1
