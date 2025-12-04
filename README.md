@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 🌆 FixMySociety — Civic Issue Reporting Platform
 🥈 2nd Prize — KIIT Internal Smart India Hackathon (SIH)
 
@@ -48,3 +49,6 @@ Status management
 Filtering & exporting
 
 Notifications & analytics
+=======
+
+>>>>>>> 30729c03dc6c1e4966554ae65742bf08316809b1
