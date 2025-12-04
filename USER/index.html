@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityPortal - Report Issues</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="theme-color" content="#2C3E50">
+</head>
+<body>
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-city"></i>
+            </div>
+            <h2>CityPortal</h2>
+            <p>Connecting Citizens with Government</p>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container" id="appContainer">
+        <!-- Header -->
+        <header class="mobile-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <button class="menu-btn" id="menuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="header-title" id="headerTitle">CityPortal</h1>
+                </div>
+                <div class="header-right">
+                    <button class="notification-btn" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationBadge">2</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Side Menu Overlay -->
+        <div class="side-menu-overlay" id="sideMenuOverlay">
+            <div class="side-menu">
+                <div class="side-menu-header">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-info">
+                        <h3>Raj Singh</h3>
+                        <p>raj446@gmail.com</p>
+                    </div>
+                    <button class="close-menu-btn" id="closeMenuBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <nav class="side-menu-nav">
+                    <a href="#" class="menu-item" data-action="emergency">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>Emergency Contact</span>
+                    </a>
+                    <a href="#" class="menu-item" data-action="help">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Help & FAQ</span>
+                    </a>
+                    <a href="#" class="menu-item" data-action="feedback">
+                        <i class="fas fa-comment"></i>
+                        <span>Send Feedback</span>
+                    </a>
+                    <a href="#" class="menu-item" data-action="about">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Home Page -->
+            <div class="page active" id="homePage">
+                <div class="page-content">
+                    <!-- Welcome Section -->
+                    <section class="welcome-section">
+                        <div class="welcome-content">
+                            <h2>Welcome back, Raj!</h2>
+                            <p>Report issues, track progress, and help improve your community.</p>
+                        </div>
+                        <div class="weather-widget">
+                            <div class="weather-info">
+                                <i class="fas fa-sun"></i>
+                                <span>24°C</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quick Report Button -->
+                    <section class="quick-report">
+                        <button class="report-issue-btn" id="quickReportBtn">
+                            <div class="btn-icon">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="btn-content">
+                                <h3>REPORT ISSUE</h3>
+                                <p>Tap to report a new issue</p>
+                            </div>
+                        </button>
+                    </section>
+
+                    <!-- Category Grid -->
+                    <section class="category-section">
+                        <h3>Quick Categories</h3>
+                        <div class="category-grid" id="categoryGrid">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </section>
+
+                    <!-- Stats Section -->
+                    <section class="stats-section">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value">8</div>
+                                <div class="stat-label">Issues Reported</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">5</div>
+                                <div class="stat-label">Resolved</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">87</div>
+                                <div class="stat-label">Impact Score</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Recent Activity -->
+                    <section class="recent-activity">
+                        <h3>Recent Activity</h3>
+                        <div class="activity-list" id="recentActivityList">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </section>
+
+                    <!-- Community Updates -->
+                    <section class="community-updates">
+                        <h3>Community Updates</h3>
+                        <div class="updates-list" id="communityUpdatesList">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Report Page -->
+            <div class="page" id="reportPage">
+                <div class="page-content">
+                    <!-- Multi-step Form Container -->
+                    <div class="report-form-container">
+                        <!-- Progress Indicator -->
+                        <div class="progress-indicator">
+                            <div class="progress-steps">
+                                <div class="step active" data-step="1">
+                                    <div class="step-number">1</div>
+                                    <div class="step-label">Category</div>
+                                </div>
+                                <div class="step" data-step="2">
+                                    <div class="step-number">2</div>
+                                    <div class="step-label">Details</div>
+                                </div>
+                                <div class="step" data-step="3">
+                                    <div class="step-number">3</div>
+                                    <div class="step-label">Location</div>
+                                </div>
+                                <div class="step" data-step="4">
+                                    <div class="step-number">4</div>
+                                    <div class="step-label">Submit</div>
+                                </div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                        </div>
+
+                        <!-- Step 1: Category Selection -->
+                        <div class="form-step active" id="step1">
+                            <div class="step-content">
+                                <h2>Select Category</h2>
+                                <p>Choose the category that best describes your issue</p>
+                                <div class="category-selection-grid" id="categorySelectionGrid">
+                                    <!-- Populated by JavaScript -->
+                                </div>
+                            </div>
+                            <div class="step-actions">
+                                <button class="btn btn--secondary" id="cancelReportBtn">Cancel</button>
+                                <button class="btn btn--primary" id="step1NextBtn" disabled>Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Issue Details -->
+                        <div class="form-step" id="step2">
+                            <div class="step-content">
+                                <h2>Issue Details</h2>
+                                <form id="issueDetailsForm">
+                                    <div class="form-group">
+                                        <label class="form-label">Issue Title *</label>
+                                        <input type="text" class="form-control" id="issueTitle" placeholder="Brief description of the issue" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label">Priority Level *</label>
+                                        <div class="priority-selector">
+                                            <label class="priority-option">
+                                                <input type="radio" name="priority" value="Low">
+                                                <div class="priority-badge priority-low">
+                                                    <i class="fas fa-circle"></i>
+                                                    <span>Low</span>
+                                                </div>
+                                            </label>
+                                            <label class="priority-option">
+                                                <input type="radio" name="priority" value="Medium">
+                                                <div class="priority-badge priority-medium">
+                                                    <i class="fas fa-circle"></i>
+                                                    <span>Medium</span>
+                                                </div>
+                                            </label>
+                                            <label class="priority-option">
+                                                <input type="radio" name="priority" value="High">
+                                                <div class="priority-badge priority-high">
+                                                    <i class="fas fa-circle"></i>
+                                                    <span>High</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label">Description *</label>
+                                        <textarea class="form-control" id="issueDescription" rows="4" placeholder="Provide detailed description of the issue..." required></textarea>
+                                        <div class="char-counter">
+                                            <span id="charCount">0</span>/500
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label">Voice Recording</label>
+                                        <div class="voice-recorder">
+                                            <button type="button" class="voice-btn" id="voiceRecordBtn">
+                                                <i class="fas fa-microphone"></i>
+                                                <span>Record Voice Note</span>
+                                            </button>
+                                            <div class="voice-waveform" id="voiceWaveform" style="display: none;">
+                                                <div class="wave"></div>
+                                                <div class="wave"></div>
+                                                <div class="wave"></div>
+                                                <div class="wave"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-checkbox">
+                                            <input type="checkbox" id="anonymousReport">
+                                            <span class="checkmark"></span>
+                                            <span class="checkbox-label">Submit anonymously</span>
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="step-actions">
+                                <button class="btn btn--secondary" id="step2PrevBtn">Previous</button>
+                                <button class="btn btn--primary" id="step2NextBtn">Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Location & Photos -->
+                        <div class="form-step" id="step3">
+                            <div class="step-content">
+                                <h2>Location & Photos</h2>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Location</label>
+                                    <div class="location-section">
+                                        <button type="button" class="location-btn" id="detectLocationBtn">
+                                            <i class="fas fa-location-arrow"></i>
+                                            <span>Use Current Location</span>
+                                        </button>
+                                        <input type="text" class="form-control" id="manualLocation" placeholder="Or enter address manually">
+                                        <div class="location-accuracy" id="locationAccuracy" style="display: none;">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Location detected with high accuracy</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Mock Map View</label>
+                                    <div class="map-container">
+                                        <div class="mock-map" id="locationMap">
+                                            <div class="map-overlay">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <p>Interactive Map</p>
+                                                <small>Tap to set precise location</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Photos (Optional)</label>
+                                    <div class="photo-upload-section">
+                                        <div class="photo-upload-buttons">
+                                            <button type="button" class="photo-btn" id="takePotoBtn">
+                                                <i class="fas fa-camera"></i>
+                                                <span>Take Photo</span>
+                                            </button>
+                                            <button type="button" class="photo-btn" id="choosePhotoBtn">
+                                                <i class="fas fa-image"></i>
+                                                <span>Choose from Gallery</span>
+                                            </button>
+                                        </div>
+                                        <div class="photo-preview-grid" id="photoPreviewGrid">
+                                            <!-- Photos will be added here -->
+                                        </div>
+                                        <div class="photo-upload-note">
+                                            <i class="fas fa-info-circle"></i>
+                                            <span>Up to 5 photos, max 10MB each</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step-actions">
+                                <button class="btn btn--secondary" id="step3PrevBtn">Previous</button>
+                                <button class="btn btn--primary" id="step3NextBtn">Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Review & Submit -->
+                        <div class="form-step" id="step4">
+                            <div class="step-content">
+                                <h2>Review & Submit</h2>
+                                
+                                <div class="review-section">
+                                    <div class="review-item">
+                                        <h4>Category</h4>
+                                        <p id="reviewCategory">-</p>
+                                    </div>
+                                    <div class="review-item">
+                                        <h4>Title</h4>
+                                        <p id="reviewTitle">-</p>
+                                    </div>
+                                    <div class="review-item">
+                                        <h4>Priority</h4>
+                                        <p id="reviewPriority">-</p>
+                                    </div>
+                                    <div class="review-item">
+                                        <h4>Description</h4>
+                                        <p id="reviewDescription">-</p>
+                                    </div>
+                                    <div class="review-item">
+                                        <h4>Location</h4>
+                                        <p id="reviewLocation">-</p>
+                                    </div>
+                                    <div class="review-item">
+                                        <h4>Photos</h4>
+                                        <div id="reviewPhotos">No photos attached</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-preferences">
+                                    <h4>Contact Preferences</h4>
+                                    <div class="form-group">
+                                        <label class="form-label">How would you like to be contacted?</label>
+                                        <div class="contact-options">
+                                            <label class="contact-option">
+                                                <input type="checkbox" name="contact" value="email" checked>
+                                                <i class="fas fa-envelope"></i>
+                                                <span>Email</span>
+                                            </label>
+                                            <label class="contact-option">
+                                                <input type="checkbox" name="contact" value="sms">
+                                                <i class="fas fa-sms"></i>
+                                                <span>SMS</span>
+                                            </label>
+                                            <label class="contact-option">
+                                                <input type="checkbox" name="contact" value="app" checked>
+                                                <i class="fas fa-mobile-alt"></i>
+                                                <span>App Notifications</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="terms-section">
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" id="acceptTerms" required>
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">I agree to the <a href="#" target="_blank">Terms and Conditions</a></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="step-actions">
+                                <button class="btn btn--secondary" id="step4PrevBtn">Previous</button>
+                                <button class="btn btn--outline" id="saveDraftBtn">Save Draft</button>
+                                <button class="btn btn--primary" id="submitReportBtn">Submit Report</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Track Page -->
+            <div class="page" id="trackPage">
+                <div class="page-content">
+                    <div class="track-header">
+                        <h2>My Reports</h2>
+                        <button class="filter-toggle-btn" id="filterToggleBtn">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Filter Panel -->
+                    <div class="filter-panel" id="filterPanel">
+                        <div class="filter-tabs">
+                            <button class="filter-tab active" data-filter="all">All</button>
+                            <button class="filter-tab" data-filter="Open">Open</button>
+                            <button class="filter-tab" data-filter="In Progress">In Progress</button>
+                            <button class="filter-tab" data-filter="Resolved">Resolved</button>
+                            <button class="filter-tab" data-filter="Closed">Closed</button>
+                        </div>
+                        <div class="search-section">
+                            <div class="search-input-wrapper">
+                                <i class="fas fa-search"></i>
+                                <input type="text" class="search-input" id="searchIssues" placeholder="Search your reports...">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Issues List -->
+                    <div class="issues-list" id="issuesList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <div class="empty-state-content">
+                            <i class="fas fa-clipboard-list"></i>
+                            <h3>No issues found</h3>
+                            <p>Try adjusting your filters or search terms</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div class="page" id="profilePage">
+                <div class="page-content">
+                    <!-- Profile Header -->
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <div class="avatar-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <button class="avatar-edit-btn">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <div class="profile-info">
+                            <h2>Raj Singh</h2>
+                            <p>Member since Jan 2024</p>
+                            <div class="profile-stats">
+                                <div class="stat">
+                                    <span class="stat-value">8</span>
+                                    <span class="stat-label">Reports</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">5</span>
+                                    <span class="stat-label">Resolved</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">87</span>
+                                    <span class="stat-label">Impact</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Profile Sections -->
+                    <div class="profile-sections">
+                        <!-- Personal Information -->
+                        <div class="profile-section">
+                            <div class="section-header">
+                                <h3>Personal Information</h3>
+                                <button class="edit-btn" id="editPersonalBtn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                            <div class="section-content">
+                                <div class="info-item">
+                                    <label>Full Name</label>
+                                    <span>Raj Singh</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Email</label>
+                                    <span>raj446@gmail.com</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Phone</label>
+                                    <span>+91-93019-30492</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Address</label>
+                                    <span>123 Main Street, City Center</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Preferences -->
+                        <div class="profile-section">
+                            <div class="section-header">
+                                <h3>Notification Preferences</h3>
+                            </div>
+                            <div class="section-content">
+                                <div class="preference-item">
+                                    <div class="pref-info">
+                                        <label>Push Notifications</label>
+                                        <span>Get notified about issue updates</span>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="pushNotifications" checked>
+                                        <label for="pushNotifications"></label>
+                                    </div>
+                                </div>
+                                <div class="preference-item">
+                                    <div class="pref-info">
+                                        <label>Email Updates</label>
+                                        <span>Receive email notifications</span>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="emailUpdates" checked>
+                                        <label for="emailUpdates"></label>
+                                    </div>
+                                </div>
+                                <div class="preference-item">
+                                    <div class="pref-info">
+                                        <label>SMS Alerts</label>
+                                        <span>Get SMS for urgent updates</span>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="smsAlerts">
+                                        <label for="smsAlerts"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- App Settings -->
+                        <div class="profile-section">
+                            <div class="section-header">
+                                <h3>App Settings</h3>
+                            </div>
+                            <div class="section-content">
+                                <div class="setting-item">
+                                    <label>Theme</label>
+                                    <select class="form-control" id="themeSelect">
+                                        <option value="light">Light</option>
+                                        <option value="dark">Dark</option>
+                                        <option value="auto">Auto</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <label>Language</label>
+                                    <select class="form-control" id="languageSelect">
+                                        <option value="en">English</option>
+                                        <option value="hi">हिन्दी</option>
+                                        <option value="es">Español</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Support & Help -->
+                        <div class="profile-section">
+                            <div class="section-header">
+                                <h3>Support & Help</h3>
+                            </div>
+                            <div class="section-links">
+                                <a href="#" class="link-item">
+                                    <i class="fas fa-life-ring"></i>
+                                    <span>Contact Support</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <a href="#" class="link-item">
+                                    <i class="fas fa-question-circle"></i>
+                                    <span>FAQ & Help</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <a href="#" class="link-item">
+                                    <i class="fas fa-download"></i>
+                                    <span>Export My Data</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <a href="#" class="link-item">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Privacy Settings</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Logout -->
+                        <div class="profile-section">
+                            <button class="logout-btn" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </button>
+            <button class="nav-item" data-page="report">
+                <i class="fas fa-plus"></i>
+                <span>Report</span>
+            </button>
+            <button class="nav-item" data-page="track">
+                <i class="fas fa-list"></i>
+                <span>Track</span>
+            </button>
+            <button class="nav-item" data-page="profile">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+        <!-- Issue Detail Modal -->
+        <div class="modal" id="issueDetailModal">
+            <div class="modal-header">
+                <h3>Issue Details</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="issueDetailContent">
+                <!-- Content populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--secondary" id="closeDetailBtn">Close</button>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div class="modal small" id="confirmModal">
+            <div class="modal-header">
+                <h3 id="confirmTitle">Confirm Action</h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Are you sure you want to continue?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--secondary" id="confirmCancelBtn">Cancel</button>
+                <button class="btn btn--primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

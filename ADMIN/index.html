@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civic Issue Management - Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="header-title">Civic Issue Management System</h1>
+            <div class="header-actions">
+                <div class="user-info">
+                    <span class="user-name">Admin User</span>
+                    <button class="btn btn--outline btn--sm" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-page="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="issues">
+                        <i class="fas fa-list"></i>
+                        <span>Issue Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="staff">
+                        <i class="fas fa-users-cog"></i>
+                        <span>Staff Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="map">
+                        <i class="fas fa-map"></i>
+                        <span>Map View</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="analytics">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="users">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="departments">
+                        <i class="fas fa-building"></i>
+                        <span>Departments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                        <span class="badge" id="notificationCount">2</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="reports">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Page -->
+        <div class="page active" id="dashboard-page">
+            <div class="page-header">
+                <h2>Dashboard</h2>
+                <div class="quick-actions">
+                    <button class="btn btn--primary" id="newIssueBtn">
+                        <i class="fas fa-plus"></i> New Issue
+                    </button>
+                    <button class="btn btn--secondary" id="generateReportBtn">
+                        <i class="fas fa-file-download"></i> Generate Report
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Summary Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: var(--color-bg-1);">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalIssues">156</h3>
+                            <p>Total Issues</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: var(--color-bg-4);">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="openIssues">23</h3>
+                            <p>Open Issues</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: var(--color-bg-3);">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="closedIssues">133</h3>
+                            <p>Closed Issues</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: var(--color-bg-6);">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="avgResolutionTime">2.1 days</h3>
+                            <p>Avg Resolution Time</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card recent-activity">
+                    <div class="card__body">
+                        <h3>Recent Activity</h3>
+                        <div class="activity-list" id="activityList">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Priority Alerts -->
+                <div class="card priority-alerts">
+                    <div class="card__body">
+                        <h3>Priority Alerts</h3>
+                        <div class="alert-list" id="alertList">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trends Chart -->
+                <div class="card trends-chart">
+                    <div class="card__body">
+                        <h3>Issue Trends (Last 30 Days)</h3>
+                        <div class="chart-container" style="position: relative; height: 300px;">
+                            <canvas id="trendsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Issue Management Page -->
+        <div class="page" id="issues-page">
+            <div class="page-header">
+                <h2>Issue Management</h2>
+                <button class="btn btn--primary" id="addIssueBtn">
+                    <i class="fas fa-plus"></i> Add New Issue
+                </button>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-panel">
+                <div class="filters-row">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="searchIssues" placeholder="Search issues...">
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" id="categoryFilter">
+                            <option value="">All Categories</option>
+                            <option value="Roads">Roads</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Environment">Environment</option>
+                            <option value="Safety">Safety</option>
+                            <option value="Parks">Parks</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" id="priorityFilter">
+                            <option value="">All Priorities</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" id="statusFilter">
+                            <option value="">All Statuses</option>
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Under Review">Under Review</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+                    <button class="btn btn--secondary" id="clearFilters">Clear</button>
+                    <button class="btn btn--outline" id="exportIssues">Export</button>
+                </div>
+            </div>
+
+            <!-- Issues Table -->
+            <div class="table-container">
+                <table class="data-table" id="issuesTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th class="sortable" data-sort="id">Issue ID</th>
+                            <th class="sortable" data-sort="category">Category</th>
+                            <th class="sortable" data-sort="priority">Priority</th>
+                            <th class="sortable" data-sort="status">Status</th>
+                            <th class="sortable" data-sort="location">Location</th>
+                            <th class="sortable" data-sort="submittedDate">Date</th>
+                            <th class="sortable" data-sort="assignedTo">Assigned To</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="issuesTableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    <span id="paginationInfo">Showing 1-5 of 5 items</span>
+                </div>
+                <div class="pagination" id="pagination">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Staff Management Page -->
+        <div class="page" id="staff-page">
+            <div class="page-header">
+                <h2>Staff Management</h2>
+                <div class="staff-actions">
+                    <button class="btn btn--secondary" id="availabilityFilterBtn">
+                        <i class="fas fa-filter"></i> Available Only
+                    </button>
+                    <button class="btn btn--primary" id="addStaffBtn">
+                        <i class="fas fa-plus"></i> Add Staff
+                    </button>
+                </div>
+            </div>
+
+            <!-- Category Selection -->
+            <div class="staff-categories" id="staffCategories">
+                <div class="categories-grid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Staff List -->
+            <div class="staff-list-container" id="staffListContainer" style="display: none;">
+                <div class="staff-list-header">
+                    <button class="btn btn--outline btn--sm" id="backToCategoriesBtn">
+                        <i class="fas fa-arrow-left"></i> Back to Categories
+                    </button>
+                    <h3 id="selectedCategoryTitle">Staff in Category</h3>
+                    <div class="availability-summary" id="availabilitySummary">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="staff-grid" id="staffGrid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Map View Page -->
+        <div class="page" id="map-page">
+            <div class="page-header">
+                <h2>Map View</h2>
+                <div class="map-controls">
+                    <button class="btn btn--secondary" id="toggleHeatMap">Heat Map</button>
+                    <button class="btn btn--outline" id="resetMapView">Reset View</button>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <div class="map-filters">
+                    <h3>Filters</h3>
+                    <div class="filter-group">
+                        <label>Category</label>
+                        <div class="checkbox-group" id="mapCategoryFilters">
+                            <label><input type="checkbox" value="Roads" checked> Roads</label>
+                            <label><input type="checkbox" value="Utilities" checked> Utilities</label>
+                            <label><input type="checkbox" value="Environment" checked> Environment</label>
+                            <label><input type="checkbox" value="Safety" checked> Safety</label>
+                            <label><input type="checkbox" value="Parks" checked> Parks</label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>Priority</label>
+                        <div class="checkbox-group" id="mapPriorityFilters">
+                            <label><input type="checkbox" value="High" checked> High</label>
+                            <label><input type="checkbox" value="Medium" checked> Medium</label>
+                            <label><input type="checkbox" value="Low" checked> Low</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-view">
+                    <div class="mock-map" id="mockMap">
+                        <div class="map-header">Interactive Map View</div>
+                        <div class="map-grid" id="mapGrid">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-sidebar" id="mapSidebar">
+                    <h3>Issue Details</h3>
+                    <div class="map-issue-details" id="mapIssueDetails">
+                        <p>Click on a marker to view issue details</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Page -->
+        <div class="page" id="analytics-page">
+            <div class="page-header">
+                <h2>Analytics Dashboard</h2>
+                <div class="date-range-picker">
+                    <input type="date" class="form-control" id="startDate" value="2024-08-18">
+                    <span>to</span>
+                    <input type="date" class="form-control" id="endDate" value="2024-09-18">
+                </div>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background-color: var(--color-bg-1);">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h3>4.2 hours</h3>
+                        <p>Avg Response Time</p>
+                        <span class="kpi-trend positive">↑ 12%</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background-color: var(--color-bg-3);">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h3>89.2%</h3>
+                        <p>Resolution Rate</p>
+                        <span class="kpi-trend positive">↑ 5%</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background-color: var(--color-bg-2);">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h3>4.3/5</h3>
+                        <p>Citizen Satisfaction</p>
+                        <span class="kpi-trend neutral">→ 0%</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background-color: var(--color-bg-4);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h3>23</h3>
+                        <p>Active Issues</p>
+                        <span class="kpi-trend negative">↓ 8%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>Issues by Category</h3>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Status Distribution</h3>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card full-width">
+                    <h3>Department Performance</h3>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="departmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Management Page -->
+        <div class="page" id="users-page">
+            <div class="page-header">
+                <h2>User Management</h2>
+                <button class="btn btn--primary" id="addUserBtn">
+                    <i class="fas fa-plus"></i> Add User
+                </button>
+            </div>
+
+            <!-- User Tabs -->
+            <div class="tabs">
+                <button class="tab-button active" data-tab="citizens">Citizens</button>
+                <button class="tab-button" data-tab="staffusers">Staff Users</button>
+            </div>
+
+            <!-- Citizens Tab -->
+            <div class="tab-content active" id="citizens-tab">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Registration Date</th>
+                                <th>Issues Reported</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="citizensTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Staff Users Tab -->
+            <div class="tab-content" id="staffusers-tab">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Role</th>
+                                <th>Last Login</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staffUsersTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Departments Page -->
+        <div class="page" id="departments-page">
+            <div class="page-header">
+                <h2>Department Management</h2>
+                <button class="btn btn--primary" id="addDepartmentBtn">
+                    <i class="fas fa-plus"></i> Add Department
+                </button>
+            </div>
+
+            <div class="departments-grid">
+                <div id="departmentsGrid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Page -->
+        <div class="page" id="notifications-page">
+            <div class="page-header">
+                <h2>Notification Center</h2>
+                <div class="notification-actions">
+                    <button class="btn btn--primary" id="composeMessageBtn">
+                        <i class="fas fa-pen"></i> Compose
+                    </button>
+                    <button class="btn btn--secondary" id="markAllReadBtn">
+                        <i class="fas fa-check"></i> Mark All Read
+                    </button>
+                </div>
+            </div>
+
+            <div class="notifications-container">
+                <div class="notification-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="System Alert">System Alerts</button>
+                    <button class="filter-btn" data-filter="Issue Update">Issue Updates</button>
+                    <button class="filter-btn" data-filter="User Message">User Messages</button>
+                </div>
+                
+                <div class="notifications-list" id="notificationsList">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Page -->
+        <div class="page" id="reports-page">
+            <div class="page-header">
+                <h2>Reports</h2>
+            </div>
+
+            <div class="reports-grid">
+                <div class="report-templates">
+                    <h3>Report Templates</h3>
+                    <div class="template-list">
+                        <div class="template-card" data-template="daily">
+                            <i class="fas fa-calendar-day"></i>
+                            <h4>Daily Summary</h4>
+                            <p>Daily issue summary and performance metrics</p>
+                            <button class="btn btn--primary btn--sm">Generate</button>
+                        </div>
+                        <div class="template-card" data-template="weekly">
+                            <i class="fas fa-calendar-week"></i>
+                            <h4>Weekly Performance</h4>
+                            <p>Weekly department performance analysis</p>
+                            <button class="btn btn--primary btn--sm">Generate</button>
+                        </div>
+                        <div class="template-card" data-template="monthly">
+                            <i class="fas fa-calendar-alt"></i>
+                            <h4>Monthly Analytics</h4>
+                            <p>Comprehensive monthly analytics report</p>
+                            <button class="btn btn--primary btn--sm">Generate</button>
+                        </div>
+                        <div class="template-card" data-template="department">
+                            <i class="fas fa-building"></i>
+                            <h4>Department Report</h4>
+                            <p>Individual department performance metrics</p>
+                            <button class="btn btn--primary btn--sm">Generate</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-history">
+                    <h3>Report History</h3>
+                    <div class="history-list" id="reportHistory">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div class="page" id="settings-page">
+            <div class="page-header">
+                <h2>Settings</h2>
+            </div>
+
+            <div class="settings-tabs">
+                <button class="tab-button active" data-tab="general">General</button>
+                <button class="tab-button" data-tab="security">Security</button>
+                <button class="tab-button" data-tab="notifications-settings">Notifications</button>
+                <button class="tab-button" data-tab="appearance">Appearance</button>
+            </div>
+
+            <div class="settings-content">
+                <div class="tab-content active" id="general-settings">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">System Name</label>
+                            <input type="text" class="form-control" value="Civic Issue Management System">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Timezone</label>
+                            <select class="form-control">
+                                <option>UTC-05:00 Eastern Time</option>
+                                <option>UTC-06:00 Central Time</option>
+                                <option>UTC-07:00 Mountain Time</option>
+                                <option>UTC-08:00 Pacific Time</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Default Language</label>
+                            <select class="form-control">
+                                <option>English</option>
+                                <option>Spanish</option>
+                                <option>French</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contact Email</label>
+                            <input type="email" class="form-control" value="admin@city.gov">
+                        </div>
+                    </div>
+                    <button class="btn btn--primary">Save Changes</button>
+                </div>
+
+                <div class="tab-content" id="security-settings">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Session Timeout (minutes)</label>
+                            <input type="number" class="form-control" value="60">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password Policy</label>
+                            <select class="form-control">
+                                <option>Standard (8+ chars)</option>
+                                <option>Strong (12+ chars, mixed case)</option>
+                                <option>Very Strong (16+ chars, special chars)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Enable Two-Factor Authentication
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox"> Require password change every 90 days
+                            </label>
+                        </div>
+                    </div>
+                    <button class="btn btn--primary">Save Security Settings</button>
+                </div>
+
+                <div class="tab-content" id="notifications-settings-tab">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Email notifications for new issues
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> SMS alerts for urgent issues
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox"> Daily summary reports
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> System maintenance notifications
+                            </label>
+                        </div>
+                    </div>
+                    <button class="btn btn--primary">Save Notification Settings</button>
+                </div>
+
+                <div class="tab-content" id="appearance-settings">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Theme</label>
+                            <select class="form-control" id="themeSelect">
+                                <option value="auto">Auto (System)</option>
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Font Size</label>
+                            <select class="form-control">
+                                <option>Small</option>
+                                <option selected>Medium</option>
+                                <option>Large</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sidebar Width</label>
+                            <select class="form-control">
+                                <option>Compact</option>
+                                <option selected>Standard</option>
+                                <option>Wide</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn--primary">Save Appearance Settings</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+        <!-- Issue Detail Modal -->
+        <div class="modal" id="issueDetailModal">
+            <div class="modal-header">
+                <h3>Issue Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="issueDetailContent">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--secondary" onclick="closeModal()">Close</button>
+                <button class="btn btn--primary" id="updateIssueBtn">Update Issue</button>
+            </div>
+        </div>
+
+        <!-- Staff Assignment Modal -->
+        <div class="modal" id="staffAssignmentModal">
+            <div class="modal-header">
+                <h3>Assign Staff to Issue</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="staffAssignmentContent">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn--primary" id="confirmAssignmentBtn">Assign Staff</button>
+            </div>
+        </div>
+
+        <!-- Issue Assignment Modal -->
+        <div class="modal" id="issueAssignmentModal">
+            <div class="modal-header">
+                <h3>Assign Issue to Staff</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="issueAssignmentContent">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn--primary" id="confirmIssueAssignmentBtn">Assign Issue</button>
+            </div>
+        </div>
+
+        <!-- Generic Modal -->
+        <div class="modal" id="genericModal">
+            <div class="modal-header">
+                <h3 id="genericModalTitle">Modal Title</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="genericModalContent">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div class="modal-footer" id="genericModalFooter">
+                <button class="btn btn--secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn--primary" id="genericModalAction">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
