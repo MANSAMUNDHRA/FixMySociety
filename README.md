@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 🌆 FixMySociety — Civic Issue Reporting Platform
 🥈 2nd Prize — KIIT Internal Smart India Hackathon (SIH)
 
